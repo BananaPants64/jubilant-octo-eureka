@@ -6,6 +6,10 @@ public class App {
 
     static String[][] goBoard = new String[9][9];
 
+    static int countLiberties(String[][] board, int xPos, int yPos){
+        //TODO
+    }
+
     static void getBoard(String[][] b){
         System.out.print(" ");
             for (int i = 0; i < b.length; i++){
