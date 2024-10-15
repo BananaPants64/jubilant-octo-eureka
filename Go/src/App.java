@@ -7,7 +7,18 @@ public class App {
     static String[][] goBoard = new String[9][9];
 
     static int countLiberties(String[][] board, int xPos, int yPos){
-        //TODO
+        //count of liberties
+        int total = 0;
+        //check above
+        if (xPos > 1){
+            //rememeber x and y coordinates are 1 - 9, not 0 - 8
+            if (board[xPos - 2][yPos - 1].equals("|") || board[xPos - 2][yPos - 1].equals("-|")){
+                total += 1;
+            }
+        }
+        //check left
+        //check below
+        //check right
     }
 
     static void getBoard(String[][] b){
@@ -40,11 +51,8 @@ public class App {
             }
     }
 
-    public static void main(String[] args) throws Exception {
-        /* 
-        goBoard[1][1] = "-□";
-        goBoard[2][2] = "-■";
-        */
+    public static void main(String[] args) {
+        
         Boolean blackTurn = true;
 
         while (true){
