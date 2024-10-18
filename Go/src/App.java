@@ -4,18 +4,25 @@ public class App {
 
     
 
-    static String[][] goBoard = new String[9][9];
+    //static String[][] goBoard = new String[9][9];
 
-    static boolean hasLiberties(String[][] board, int xPos, int yPos, int lastDirection){
-        /* 
-         * lastDirection denotes which direction the search came from
-         * this prevents double backing on itself
-         * the initial call to this function always inputs 0 denoting no initial direction
-         * 1 = up
-         * 2 = left
-         * 3 = down
-         * 4 = right
-         */
+    static String[][] goBoard = {
+        {null, null, null, null, null, null, null, null, null},
+        {null, null, null, null, null, null, null, null, null},
+        {null, null, null, "O", "O", "O", "O", "O", null},
+        {null, null, "O", "0", "0", "0", "0", "0", "O"},
+        {null, null, "O", "0", null, "0", null, "0", "O"},
+        {null, null, null, "O", "0", "0", "0", "0", "O"},
+        {null, null, null, null, "O", "O", "O", "O", null},
+        {null, null, null, null, null, null, null, null, null},
+        {null, null, null, null, null, null, null, null, null}
+    };
+    //initiallizes all to false
+    static boolean[][] beenChecked = new boolean[9][9];
+
+    static boolean hasLiberties(String[][] board, int xPos, int yPos){
+        
+        beenChecked[xPos][yPos] = true;
         
         if (board[xPos][yPos] != null){
             //check 4 orthogonal sides
@@ -34,26 +41,26 @@ public class App {
 
             //check adjacent pieces of same type
             //up
-            if (yPos > 0 && board[xPos][yPos].equals(board[xPos][yPos - 1]) && lastDirection != 3){
-                if (hasLiberties(board, xPos, yPos - 1, 1)){
+            if (yPos > 0 && board[xPos][yPos].equals(board[xPos][yPos - 1]) && !beenChecked[xPos][yPos - 1]){
+                if (hasLiberties(board, xPos, yPos - 1)){
                     return true;
                 }
             }
             //left
-            if (xPos > 0 && board[xPos][yPos].equals(board[xPos - 1][yPos]) && lastDirection != 4){
-                if (hasLiberties(board, xPos - 1, yPos, 2)){
+            if (xPos > 0 && board[xPos][yPos].equals(board[xPos - 1][yPos]) && !beenChecked[xPos - 1][yPos]){
+                if (hasLiberties(board, xPos - 1, yPos)){
                     return true;
                 }
             }
             //down
-            if (yPos < board[xPos].length - 1 && board[xPos][yPos].equals(board[xPos][yPos + 1]) && lastDirection != 1){
-                if (hasLiberties(board, xPos, yPos + 1, 3)){
+            if (yPos < board[xPos].length - 1 && board[xPos][yPos].equals(board[xPos][yPos + 1]) && !beenChecked[xPos][yPos + 1]){
+                if (hasLiberties(board, xPos, yPos + 1)){
                     return true;
                 }
             }
             //right
-            if (xPos < board.length - 1 && board[xPos][yPos].equals(board[xPos + 1][yPos]) && lastDirection != 2){
-                if (hasLiberties(board, xPos + 1, yPos, 4)){
+            if (xPos < board.length - 1 && board[xPos][yPos].equals(board[xPos + 1][yPos]) && !beenChecked[xPos + 1][yPos]){
+                if (hasLiberties(board, xPos + 1, yPos)){
                     return true;
                 }
             }
@@ -125,9 +132,9 @@ public class App {
         int whiteScore = 0;
         int blackScore = 0;
 
-        while (true){
 
-            
+        //Start round
+        while (true){
 
             Scanner scan = new Scanner(System.in);
             
@@ -170,7 +177,7 @@ public class App {
                 //check for captures
                 for (int i = 0; i < goBoard.length; i++){
                     for (int j = 0; j < goBoard[i].length; j++){
-                        if (!hasLiberties(goBoard, i, j, 0)){
+                        if (!hasLiberties(goBoard, i, j)){
                             if (goBoard[i][j].equals("0")){
                                 blackScore += removeGroup(goBoard, i, j, 0);
                             }
